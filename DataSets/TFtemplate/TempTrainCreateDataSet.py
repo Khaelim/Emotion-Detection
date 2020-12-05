@@ -102,7 +102,7 @@ num_classes = 7
 #defining the model
 model = tf.keras.Sequential([
   #layers.Dense(7, input_shape=([48, 48])),
-  layers.Conv2D(7, 2, activation='relu'),
+  layers.Conv2D(7, 3, activation='relu'),
   layers.MaxPooling2D(),
   layers.Conv2D(32, 2, activation='relu'),
   layers.MaxPooling2D(),
@@ -128,9 +128,9 @@ tensorboard_callback = tf.keras.callbacks.TensorBoard(log_dir=log_dir, histogram
 model.fit(
   train_ds,
   validation_data=val_ds,
-  batch_size=80,
+  batch_size=100,
   steps_per_epoch=None,
-  epochs=50,
+  epochs=64,
   callbacks=[tensorboard_callback])
 
 #

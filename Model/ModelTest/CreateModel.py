@@ -69,7 +69,16 @@ log_dir = "C:\Khaelim\ForProgramming\TBlogs" #+ datetime.datetime.now().strftime
 tensorboard_callback = tf.keras.callbacks.TensorBoard(log_dir=log_dir, histogram_freq=1)
 
 
-#training the model
+#training the model in loop w/ checkpoint
+
+model_checkpoint_callback = tf.keras.callbacks.ModelCheckpoint(
+    filepath='D:\Khaelim\Documents\ProgrammingProjects\Emotion-Detection\checkpooints',
+    save_weights_only=True,
+    monitor='val_acc',
+    mode='max',
+    save_best_only=True)
+
+
 model.fit(
   train_ds,
   validation_data=test_ds,
