@@ -17,59 +17,98 @@ print(tf.__version__)
 data_dir = 'C:/Khaelim/ForProgramming/FERv1/FER13/train/'
 data_dir = pathlib.Path(data_dir)
 
-image_count = len(list(data_dir.glob('*/*.jpg')))
+#train_ds = tf.data.experimental.load(data_dir, tf.TensorSpec(shape=())
 
-# angry = list(data_dir.glob('angry/*'))
-# disgust = list(data_dir.glob('disgust/*'))
-# fear = list(data_dir.glob('fear/*'))
-# happy = list(data_dir.glob('happy/*'))
-# neutral = list(data_dir.glob('neutral/*'))
-# sad = list(data_dir.glob('sad/*'))
-# surprise = list(data_dir.glob('surprise/*'))
+# Temp fix
+
+#dataset_dir = path = os.path.join('C:/Khaelim/ForProgramming/TFdatasets/', "saved_test_data")
+main_dir = 'C:/Khaelim/ForProgramming/FERv1/FER13/full/'
+train_dir = 'C:/Khaelim/ForProgramming/FERv1/FER13/train/'
+test_dir = 'C:/Khaelim/ForProgramming/FERv1/FER13/test/'
+main_dir = pathlib.Path(main_dir)
+train_dir = pathlib.Path(train_dir)
+test_dir = pathlib.Path(test_dir)
+image_count = len(list(main_dir.glob('*/*.jpg')))
+
+angry = list(main_dir.glob('angry/*'))
+disgust = list(main_dir.glob('disgust/*'))
+fear = list(main_dir.glob('fear/*'))
+happy = list(main_dir.glob('happy/*'))
+neutral = list(main_dir.glob('neutral/*'))
+sad = list(main_dir.glob('sad/*'))
+surprise = list(main_dir.glob('surprise/*'))
 
 batch_size = 32
 img_height = 48
 img_width = 48
 
-# train_ds = tf.keras.preprocessing.image_dataset_from_directory(
-#   data_dir,
-#   validation_split=0.2,
-#   subset="training",
-#   seed=123,
-#   image_size=(img_height, img_width),
-#   batch_size=batch_size)
 
-# val_ds = tf.keras.preprocessing.image_dataset_from_directory(
-#   data_dir,
-#   validation_split=0.2,
-#   subset="validation",
-#   seed=123,
-#   image_size=(img_height, img_width),
-#   batch_size=batch_size)
+main_ds = tf.keras.preprocessing.image_dataset_from_directory(
+  main_dir,
+  labels='inferred',
+  color_mode='grayscale',
+  class_names=['angry', 'disgust', 'fear', 'happy', 'neutral', 'sad', 'surprise'],
+  seed=123,
+  image_size=(img_height, img_width),
+  batch_size=batch_size)
 
-class_names = train_ds.class_names
-print(class_names)
-print(len(train_ds.class_names))
+train_ds = tf.keras.preprocessing.image_dataset_from_directory(
+  train_dir,
+  labels='inferred',
+  color_mode='grayscale',
+  class_names=['angry', 'disgust', 'fear', 'happy', 'neutral', 'sad', 'surprise'],
+  validation_split=0.2,
+  subset="training",
+  seed=123,
+  image_size=(img_height, img_width),
+  batch_size=batch_size)
+
+test_ds = tf.keras.preprocessing.image_dataset_from_directory(
+  test_dir,
+  labels='inferred',
+  color_mode='grayscale',
+  class_names=['angry', 'disgust', 'fear', 'happy', 'neutral', 'sad', 'surprise'],
+  validation_split=0.2,
+  subset="validation",
+  seed=123,
+  image_size=(img_height, img_width),
+  batch_size=batch_size)
+
+## end temp fix
+
+train_ds = train_ds.cache().prefetch(buffer_size=tf.data.experimental.AUTOTUNE)
+test_ds = test_ds.cache().prefetch(buffer_size=tf.data.experimental.AUTOTUNE)
+
+
+image_count = len(list(data_dir.glob('*/*.jpg')))
+
+
+batch_size = 32
+img_height = 48
+img_width = 48
+
+# class_names = train_ds.class_names
+# print(class_names)
+# print(len(train_ds.class_names))
 
 #caching images to increase performance
 AUTOTUNE = tf.data.experimental.AUTOTUNE
 
 train_ds = train_ds.cache().prefetch(buffer_size=AUTOTUNE)
-val_ds = val_ds.cache().prefetch(buffer_size=AUTOTUNE)
+val_ds = test_ds.cache().prefetch(buffer_size=AUTOTUNE)
 
 #number of clasifications
 num_classes = 7
 #defining the model
 model = tf.keras.Sequential([
-  #layers.experimental.preprocessing.Rescaling(1./255),
-  layers.Dense(6, input_shape=(48, 48, 3)),
-  layers.Conv2D(32, 3, activation='relu'),
+  #layers.Dense(7, input_shape=([48, 48])),
+  layers.Conv2D(7, 2, activation='relu'),
   layers.MaxPooling2D(),
-  layers.Conv2D(32, 3, activation='softmax'),
+  layers.Conv2D(32, 2, activation='relu'),
   layers.MaxPooling2D(),
-  layers.Conv2D(32, 3, activation='relu'),
+  layers.Conv2D(64, 2, activation='relu'),
   layers.MaxPooling2D(),
-  layers.Conv2D(32, 3, activation='elu'),
+  layers.Conv2D(32, 2, activation='elu'),
   layers.Flatten(),
   layers.Dense(128, activation='relu'),
   layers.Dense(num_classes)
@@ -81,25 +120,25 @@ model.compile(
   metrics=['accuracy'])
 
 #Attempting to add tensorboard
-# log_dir = "C:\Khaelim\ForProgramming\TBlogs" + datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
-# tensorboard_callback = tf.keras.callbacks.TensorBoard(log_dir=log_dir, histogram_freq=1)
+log_dir = "C:\Khaelim\ForProgramming\TBlogs"# + datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
+tensorboard_callback = tf.keras.callbacks.TensorBoard(log_dir=log_dir, histogram_freq=1, write_graph='true', update_freq='epoch')
 
 
 #training the model
 model.fit(
   train_ds,
   validation_data=val_ds,
-  batch_size=128,
+  batch_size=80,
   steps_per_epoch=None,
-  epochs=35)
+  epochs=50,
+  callbacks=[tensorboard_callback])
 
 #
 #tf.saved_model.save(model, "C:/Khaelim/ForProgramming/TFmodels/Facial_emote/")
 
 tf.keras.models.save_model(
-    model, "C:/Khaelim/ForProgramming/TFmodels/Facial_emote/test.h5", overwrite=True, include_optimizer=True, save_format='pb',
+    model, "test.pb", overwrite=True, include_optimizer=True, save_format='pb',
     signatures=None, options=None
 )
-model.save('my_model.h5')
-model.predict(data_dir.glob('angry/S010_004_00000017.png'))
-model.save('my_model.h5')
+model.save('my_model.pb')
+

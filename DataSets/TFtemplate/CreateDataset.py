@@ -14,7 +14,9 @@ from tensorflow.keras import layers
 from tensorflow.keras.models import Sequential
 
 dataset_dir = path = os.path.join('C:/Khaelim/ForProgramming/TFdatasets/', "saved_test_data")
-main_dir = 'C:/Khaelim/ForProgramming/FERv1/FER13/train/'
+main_dir = 'C:/Khaelim/ForProgramming/FERv1/FER13/full/'
+train_dir = 'C:/Khaelim/ForProgramming/FERv1/FER13/train/'
+test_dir = 'C:/Khaelim/ForProgramming/FERv1/FER13/test/'
 main_dir = pathlib.Path(main_dir)
 
 image_count = len(list(main_dir.glob('*/*.jpg')))
@@ -32,35 +34,43 @@ img_height = 48
 img_width = 48
 
 
-test_ds = tf.keras.preprocessing.image_dataset_from_directory(
-  val_dir,
+main_ds = tf.keras.preprocessing.image_dataset_from_directory(
+  main_dir,
   labels='inferred',
   color_mode='grayscale',
-  subset="validation",
   class_names=['angry', 'disgust', 'fear', 'happy', 'neutral', 'sad', 'surprise'],
   seed=123,
   image_size=(img_height, img_width),
-  validation_split=0.2,
   batch_size=batch_size)
 
 train_ds = tf.keras.preprocessing.image_dataset_from_directory(
-  val_dir,
+  train_dir,
   labels='inferred',
   color_mode='grayscale',
-  subset="training",
   class_names=['angry', 'disgust', 'fear', 'happy', 'neutral', 'sad', 'surprise'],
+  validation_split=0.2,
+  subset="training",
   seed=123,
   image_size=(img_height, img_width),
-  validation_split=0.2,
   batch_size=batch_size)
 
-tf.data.experimental.save(train_ds, dataset_dir)
-tf.data.experimental.save(test_ds, dataset_dir)
+test_ds = tf.keras.preprocessing.image_dataset_from_directory(
+  test_dir,
+  labels='inferred',
+  color_mode='grayscale',
+  class_names=['angry', 'disgust', 'fear', 'happy', 'neutral', 'sad', 'surprise'],
+  validation_split=0.2,
+  subset="validation",
+  seed=123,
+  image_size=(img_height, img_width),
+  batch_size=batch_size)
+tf.data.experimental.save(train_ds, train_dir)
+tf.data.experimental.save(test_ds, test_dir)
 
 
 
 #To cache the model for repeated training
-#test_ds = train_ds.cache().prefetch(buffer_size=AUTOTUNE)
+test_ds = train_ds.cache().prefetch(buffer_size=tf.data.experimental.AUTOTUNE)
 
 
 print('Done')

@@ -14,14 +14,22 @@ from tensorflow.keras import layers
 from tensorflow.keras.models import Sequential
 
 print(tf.__version__)
-train_dir = 'C:/Khaelim/ForProgramming/FERv1/FER13/train/'
+train_dir = 'C:\Khaelim\ForProgramming\FERv1\FER13\\train\\11033984163767626638\saved_test_data'
+test_dir = 'C:\Khaelim\ForProgramming\FERv1\FER13\\test\\11033984163767626638\saved_test_data'
 train_dir = pathlib.Path(train_dir)
+test_dir = pathlib.Path(test_dir)
 
-image_count = len(list(train_dir.glob('*/*.jpg')))
+#image_count = len(list(train_dir.glob('*/*.jpg')))
 
 batch_size = 32
 img_height = 48
 img_width = 48
+
+train_ds=tf.data.experimental.load(train_dir,
+    tf.TensorSpec(shape=([48,48]), dtype=tf.float32))
+
+test_ds=tf.data.experimental.load(test_dir,
+    tf.TensorSpec(shape=([48,48]), dtype=tf.float32))
 
 class_names = train_ds.class_names
 print(class_names)
@@ -31,7 +39,7 @@ print(len(train_ds.class_names))
 AUTOTUNE = tf.data.experimental.AUTOTUNE
 
 train_ds = train_ds.cache().prefetch(buffer_size=AUTOTUNE)
-val_ds = val_ds.cache().prefetch(buffer_size=AUTOTUNE)
+val_ds = test_dir.cache().prefetch(buffer_size=AUTOTUNE)
 
 #number of clasifications
 num_classes = 7
@@ -57,17 +65,18 @@ model.compile(
   metrics=['accuracy'])
 
 #Attempting to add tensorboard
-# log_dir = "C:\Khaelim\ForProgramming\TBlogs" + datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
-# tensorboard_callback = tf.keras.callbacks.TensorBoard(log_dir=log_dir, histogram_freq=1)
+log_dir = "C:\Khaelim\ForProgramming\TBlogs" #+ datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
+tensorboard_callback = tf.keras.callbacks.TensorBoard(log_dir=log_dir, histogram_freq=1)
 
 
 #training the model
 model.fit(
   train_ds,
-  validation_data=val_ds,
+  validation_data=test_ds,
   batch_size=128,
   steps_per_epoch=None,
-  epochs=35)
+  epochs=35,
+  callbacks=[tensorboard_callback])
 
 #
 #tf.saved_model.save(model, "C:/Khaelim/ForProgramming/TFmodels/Facial_emote/")
@@ -76,6 +85,5 @@ tf.keras.models.save_model(
     model, "C:/Khaelim/ForProgramming/TFmodels/Facial_emote/test.h5", overwrite=True, include_optimizer=True, save_format='pb',
     signatures=None, options=None
 )
-model.save('my_model.h5')
-model.predict(data_dir.glob('angry/S010_004_00000017.png'))
+
 model.save('my_model.h5')
