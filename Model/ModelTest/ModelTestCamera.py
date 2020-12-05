@@ -13,7 +13,7 @@ mymodel = tf.keras.models.load_model('C:/Khaelim/ForProgramming/TFmodels/my_mode
 image = Image.open('C:/Users/Khaelim/Desktop/datasets/ck/CK+48/anger/S010_004_00000017.png')
 mymodel.compile(tf.keras.optimizers.Adam(), loss='mse')
 #loading a saved dataset
-dataset_dir = path = os.path.join('C:/Khaelim/ForProgramming/TFdatasets/', "saved_test_data")
+dataset_dir = path = os.path.join('C:/Khaelim/ForProgramming/TFdatasets/test', "saved_test_data")
 data_dir = 'C:/Khaelim/ForProgramming/FERv1/FER13/test/'
 data_dir = pathlib.Path(data_dir)
 
@@ -45,8 +45,8 @@ acc = mymodel.evaluate(test_ds)
 print('Restored model, accuracy: {:5.2f}%'.format(acc))
 print(test_ds.class_names)
 
-print(mymodel.predict(test_ds).shape) #predict_on_batch
+#print(mymodel.predict(test_ds).shape) #predict_on_batch
 
 
 
-#mymodel.predict(image)
+mymodel.predict(image)

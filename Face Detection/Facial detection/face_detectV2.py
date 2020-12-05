@@ -1,7 +1,7 @@
 import cv2
 import matplotlib.pyplot as plt
 from mtcnn import mtcnn
-from facenet_pytorch import MTCNN
+#from facenet_pytorch import MTCNN
 from PIL import Image
 import torch
 from imutils.video import FileVideoStream
@@ -9,7 +9,7 @@ import time
 import glob
 from tqdm.notebook import tqdm
 
-from FastMTCNN import FastMTCNN
+from fastMTCNN import FastMTCNN
 
 device = 'cuda' if torch.cuda.is_available() else 'cpu'
 
@@ -83,7 +83,7 @@ def run_detection(fast_mtcnn, filenames):
                 run_detection(fast_mtcnn, filenames)
 
 
-cap = cv2.VideoCapture('Soul-Mates.AU.S01E01.WEB-DLx264-JIVE.mp4')
+cap = cv2.VideoCapture('D:\Party Down\Party.Down.S01E03.HDTV.XviD-SYS.avi')
 
 if (cap.isOpened() == False):
     print("Error opening video stream or file")
