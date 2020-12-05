@@ -1,0 +1,13 @@
+.idea/aws.xml
+.idea/Emotion-Detection.iml
+.idea/modules.xml
+.idea/inspectionProfiles/profiles_settings.xml
+DataSets/TFtemplate/.idea/TFtemplate.iml
+Face Detection/Facial detection/#
+Face Detection/Facial detection/.idea/.gitignore
+Face Detection/Facial detection/.idea/aws.xml
+Face Detection/Facial detection/.idea/Facial detection V2.iml
+Face Detection/Facial detection/.idea/misc.xml
+Face Detection/Facial detection/.idea/modules.xml
+Face Detection/Facial detection/.idea/inspectionProfiles/profiles_settings.xml
+Model/ModelTest/.idea/ModelTest.iml
