@@ -1,15 +1,17 @@
 import cv2
 import matplotlib.pyplot as plt
-from mtcnn import mtcnn
-#from facenet_pytorch import MTCNN
-from PIL import Image
-import torch
+# from mtcnn import mtcnn
+# #from facenet_pytorch import MTCNN
+# from PIL import Image
+# import torch
+from facenet_pytorch.models import mtcnn
 from imutils.video import FileVideoStream
 import time
-import glob
+# import glob
 from tqdm.notebook import tqdm
-
-from fastMTCNN import FastMTCNN
+#
+from FastMTCNN import FastMTCNN
+import torch
 
 device = 'cuda' if torch.cuda.is_available() else 'cpu'
 
@@ -80,7 +82,7 @@ def run_detection(fast_mtcnn, filenames):
 
                 v_cap.stop()
 
-                run_detection(fast_mtcnn, filenames)
+               # run_detection(fast_mtcnn, filenames)
 
 
 cap = cv2.VideoCapture('D:\Party Down\Party.Down.S01E03.HDTV.XviD-SYS.avi')
@@ -100,8 +102,10 @@ while (cap.isOpened()):
         filename = "temp.jpg"
         cv2.imwrite("temp.jpg", frame)
         pixels = plt.imread("temp.jpg")
-        detector = mtcnn.MTCNN()
-        faces = detector.detect_faces(pixels)
+        #detector = fastMTCNN()
+        #faces = detector.detect_faces(pixels)
+        detector = FastMTCNN(5)
+        faces = detector(pixels)
         draw_facebox(filename, faces)
 
 

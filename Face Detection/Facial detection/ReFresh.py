@@ -7,7 +7,7 @@ mymodel.compile(tf.keras.optimizers.Adam(), loss='mse')
 
 face_cascade = cv2.CascadeClassifier('haarcascade_frontalface_default.xml')
 
-cap = cv2.VideoCapture('Soul-Mates.AU.S01E01.WEB-DLx264-JIVE.mp4')
+cap = cv2.VideoCapture('D:\Khaelim\Documents\ProgrammingProjects\Facial detection V2\Soul-Mates.AU.S01E01.WEB-DLx264-JIVE.mp4')
 
 while (cap.isOpened()):
     ret, frame = cap.read()

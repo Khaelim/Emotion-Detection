@@ -35,7 +35,7 @@ img_width = 48
 test_ds = tf.keras.preprocessing.image_dataset_from_directory(
   data_dir,
   labels='inferred',
-  #color_mode='grayscale',
+  color_mode='grayscale',
   class_names=['angry', 'disgust', 'fear', 'happy', 'neutral', 'sad', 'surprise'],
   seed=123,
   image_size=(img_height, img_width),
@@ -46,7 +46,8 @@ print('Restored model, accuracy: {:5.2f}%'.format(acc))
 print(test_ds.class_names)
 
 #print(mymodel.predict(test_ds).shape) #predict_on_batch
-
+predictions = mymodel.predict(test_ds)
+score = tf.nn.softmax(predictions[0])
 
 
 mymodel.predict(image)
