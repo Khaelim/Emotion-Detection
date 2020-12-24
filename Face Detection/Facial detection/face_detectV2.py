@@ -1,22 +1,26 @@
 import cv2
 import matplotlib.pyplot as plt
-from mtcnn import mtcnn
-from facenet_pytorch import MTCNN
-from PIL import Image
-import torch
+# from mtcnn import mtcnn
+# #from facenet_pytorch import MTCNN
+# from PIL import Image
+# import torch
+from facenet_pytorch.models import mtcnn
 from imutils.video import FileVideoStream
 import time
-import glob
+# import glob
 from tqdm.notebook import tqdm
-
+#
 from FastMTCNN import FastMTCNN
+import torch
 
 device = 'cuda' if torch.cuda.is_available() else 'cpu'
 
-filenames = ["glediston-bastos-ZtmmR9D_2tA-unsplash.jpg","glediston-bastos-ZtmmR9D_2tA-unsplash.jpg"]
+
+#Not sure what this is??
+#filenames = ["glediston-bastos-ZtmmR9D_2tA-unsplash.jpg","glediston-bastos-ZtmmR9D_2tA-unsplash.jpg"]
 
 # define our extractor
-fast_mtcnn = FastMTCNN(
+detctor = FastMTCNN(
 stride=4,
 resize=0.5,
 margin=14,
@@ -80,10 +84,10 @@ def run_detection(fast_mtcnn, filenames):
 
                 v_cap.stop()
 
-                run_detection(fast_mtcnn, filenames)
+               # run_detection(fast_mtcnn, filenames)
 
 
-cap = cv2.VideoCapture('Soul-Mates.AU.S01E01.WEB-DLx264-JIVE.mp4')
+cap = cv2.VideoCapture('D:\Party Down\Party.Down.S01E03.HDTV.XviD-SYS.avi')
 
 if (cap.isOpened() == False):
     print("Error opening video stream or file")
@@ -100,8 +104,10 @@ while (cap.isOpened()):
         filename = "temp.jpg"
         cv2.imwrite("temp.jpg", frame)
         pixels = plt.imread("temp.jpg")
-        detector = mtcnn.MTCNN()
-        faces = detector.detect_faces(pixels)
+        detector = FastMTCNN(2)
+        #facees = detector.detect_faces(pixels)
+        #detctor = FastMTCNN(5)
+        faces = detector(pixels)
         draw_facebox(filename, faces)
 
 

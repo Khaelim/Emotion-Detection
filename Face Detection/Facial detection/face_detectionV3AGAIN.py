@@ -12,7 +12,7 @@ from FastMTCNN import FastMTCNN
 
 device = 'cuda' if torch.cuda.is_available() else 'cpu'
 
-filenames = glob.glob('Soul-Mates.AU.S01E01.WEB-DLx264-JIVE.mp4')[:100]
+filenames = glob.glob(0)
 
 
 fast_mtcnn = FastMTCNN(
@@ -42,7 +42,7 @@ def run_detection(fast_mtcnn, filenames):
             frame = v_cap.read()
             frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
             frames.append(frame)
-
+            cv2.imshow(frame)
             if len(frames) >= batch_size or j == v_len - 1:
 
                 faces = fast_mtcnn(frames)
@@ -50,6 +50,7 @@ def run_detection(fast_mtcnn, filenames):
                 frames_processed += len(frames)
                 faces_detected += len(faces)
                 frames = []
+                
 
                 print(
                     f'Frames per second: {frames_processed / (time.time() - start):.3f},',

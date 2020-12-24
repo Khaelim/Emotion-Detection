@@ -1,6 +1,7 @@
 import cv2
 import matplotlib.pyplot as plt
-from mtcnn import mtcnn
+#from mtcnn import mtcnn
+from FastMTCNN import FastMTCNN
 from facenet_pytorch import MTCNN
 from PIL import Image
 import torch
@@ -50,7 +51,7 @@ def draw_facebox(filename, result_list):
     plt.show()
 
 
-cap = cv2.VideoCapture('Soul-Mates.AU.S01E01.WEB-DLx264-JIVE.mp4')
+cap = cv2.VideoCapture('0')
 
 if (cap.isOpened() == False):
     print("Error opening video stream or file")
@@ -68,6 +69,7 @@ while (cap.isOpened()):
         cv2.imwrite("temp.jpg", frame)
         pixels = plt.imread("temp.jpg")
         detector = mtcnn.MTCNN()
+
         faces = detector.detect_faces(pixels)
         draw_facebox(filename, faces)
 
