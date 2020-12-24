@@ -8,11 +8,11 @@ import time
 import glob
 from tqdm.notebook import tqdm
 
-from fastMTCNN import FastMTCNN
+from FastMTCNN import FastMTCNN
 
 device = 'cuda' if torch.cuda.is_available() else 'cpu'
 
-filenames = glob.glob('D:\Party Down\Party.Down.S01E03.HDTV.XviD-SYS.avi')[:100]
+filenames = glob.glob(0)
 
 
 fast_mtcnn = FastMTCNN(

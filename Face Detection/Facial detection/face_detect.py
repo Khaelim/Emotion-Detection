@@ -31,7 +31,7 @@ def draw_facebox(filename, result_list):
     plt.show()
 
 
-cap = cv2.VideoCapture('Soul-Mates.AU.S01E01.WEB-DLx264-JIVE.mp4')
+cap = cv2.VideoCapture(0)
 
 if (cap.isOpened() == False):
     print("Error opening video stream or file")

@@ -15,10 +15,12 @@ import torch
 
 device = 'cuda' if torch.cuda.is_available() else 'cpu'
 
-filenames = ["glediston-bastos-ZtmmR9D_2tA-unsplash.jpg","glediston-bastos-ZtmmR9D_2tA-unsplash.jpg"]
+
+#Not sure what this is??
+#filenames = ["glediston-bastos-ZtmmR9D_2tA-unsplash.jpg","glediston-bastos-ZtmmR9D_2tA-unsplash.jpg"]
 
 # define our extractor
-fast_mtcnn = FastMTCNN(
+detctor = FastMTCNN(
 stride=4,
 resize=0.5,
 margin=14,
@@ -102,9 +104,9 @@ while (cap.isOpened()):
         filename = "temp.jpg"
         cv2.imwrite("temp.jpg", frame)
         pixels = plt.imread("temp.jpg")
-        #detector = fastMTCNN()
-        #faces = detector.detect_faces(pixels)
-        detector = FastMTCNN(5)
+        detector = FastMTCNN(2)
+        #facees = detector.detect_faces(pixels)
+        #detctor = FastMTCNN(5)
         faces = detector(pixels)
         draw_facebox(filename, faces)
 
