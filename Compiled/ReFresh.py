@@ -26,6 +26,8 @@ while (True):
 
     img = frame
     temp_img = np.zeros([48,48,3],dtype=np.uint8)
+    tx = 0
+    ty = 0
 
     faces = face_cascade.detectMultiScale(frame, 1.2, 5)
     for (x, y, w, h) in faces:
@@ -33,12 +35,14 @@ while (True):
         roi_gray = frame[y:y + h, x:x + w]
         roi_color = frame[y:y + h, x:x + w]
         temp_img = frame[y:y + h, x:x + w]
+        tx = x
+        ty = y
 
     temp_img1 = tf.image.resize(temp_img, [48, 48], preserve_aspect_ratio=True)
     resize_image = tf.reshape(temp_img1, [-1, 48, 48, 3])
 
     predictions = mymodel.predict(resize_image)
-    cv2.putText(img, str(class_names[np.argmax(predictions[0])]), (x - 10, y - 10), cv2.FONT_HERSHEY_PLAIN, 2, (0, 255, 0))
+    cv2.putText(img, str(class_names[np.argmax(predictions[0])]), (tx - 10, ty - 10), cv2.FONT_HERSHEY_PLAIN, 2, (0, 255, 0))
 
 
     scale_percent = 75 # percent of original size
