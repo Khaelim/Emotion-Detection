@@ -14,7 +14,7 @@ from tensorflow.keras import layers
 from tensorflow.keras.models import Sequential
 
 dataset_dir = path = os.path.join('C:/Khaelim/ForProgramming/TFdatasets/', "saved_test_data")
-main_dir = 'D:\Khaelim\Documents\ProgrammingProjects\Emotion-Detection\DataSets\Tests'
+main_dir = 'D:/Khaelim/Documents/ProgrammingProjects/Emotion-Detection/DataSets/Tests'
 train_dir = 'C:/Khaelim/ForProgramming/FERv1/FER13/train/'
 #test_dir = 'D:\Khaelim\Documents\ProgrammingProjects\Emotion-Detection\DataSets\Tests'
 main_dir = pathlib.Path(main_dir)

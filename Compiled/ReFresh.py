@@ -9,7 +9,8 @@ import tensorflow as tf
 
 class_names=['angry', 'disgust', 'fear', 'happy', 'neutral', 'sad', 'surprise']
 
-mymodel = tf.keras.models.load_model('C:/Khaelim/ForProgramming/TFmodels/my_model.h5', compile=True)
+mymodel = tf.keras.models.load_model('C:/Users/Khaelim/Python Projects/Emotion-Detection/Compiled/my_model.h5', compile=True)
+#mymodel = tf.keras.models.load_model('C:/Users/Khaelim/Python Projects/Emotion-Detection/Compiled/saved_model.pb', compile=True)
 mymodel.compile(tf.keras.optimizers.Adam(), loss='mse')
 
 face_cascade = cv2.CascadeClassifier('haarcascade_frontalface_default.xml')
