@@ -99,11 +99,11 @@ model = tf.keras.Sequential([
   layers.Dense(6, input_shape=(48, 48, 1)),
   layers.Conv2D(32, 3, activation='relu'),
   layers.MaxPooling2D(),
-  layers.Conv2D(32, 3, activation='relu'),
+  layers.Conv2D(64, 3, activation='relu'),
   layers.MaxPooling2D(),
   layers.Conv2D(32, 3, activation='relu'),
   layers.MaxPooling2D(),
-  layers.Conv2D(32, 3, activation='relu'),
+  layers.Conv2D(16, 3, activation='relu'),
   layers.Flatten(),
   layers.Dense(128, activation='relu'),
   layers.Dense(num_classes)
@@ -115,7 +115,7 @@ model.compile(
   metrics=['accuracy'])
 
 #Attempting to add tensorboard
-log_dir = "C:/Khaelim/ForProgramming/TBlogs" #+ datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
+log_dir = "C:/Khaelim/ForProgramming/TBlogs" + datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
 tensorboard_callback = tf.keras.callbacks.TensorBoard(log_dir=log_dir, histogram_freq=1)
 
 
@@ -129,7 +129,7 @@ model_checkpoint_callback = tf.keras.callbacks.ModelCheckpoint(
     save_best_only=True)
 
 
-batch_size = 128
+batch_size = 32
 img_height = 48
 img_width = 48
 epochs = 100
