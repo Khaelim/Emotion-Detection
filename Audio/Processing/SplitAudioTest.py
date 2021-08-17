@@ -1,3 +1,5 @@
+import os
+
 from pydub import AudioSegment
 import math
 
@@ -30,7 +32,17 @@ class SplitWavAudioMubin():
 
 
 # change to fit current filesystem
-folder = '../Basic'
-file = 'microphone.wav'
-split_wav = SplitWavAudioMubin(folder, file)
-split_wav.multiple_split(min_per_split=1)
+folder = ''
+save_folder = ''
+
+directory = r'C:\Users\Khaelim\Python Projects\Datasets\AUDIO_FINAL'
+for filename in os.listdir(directory):
+    print(os.path.join(directory, filename))
+
+
+"""TEST"""
+
+# folder = '../Basic'
+# file = 'microphone.wav'
+# split_wav = SplitWavAudioMubin(folder, file)
+# split_wav.multiple_split(min_per_split=1)
