@@ -7,7 +7,7 @@ import numpy as np
 AUDIO_FILE = "./microphone.wav"
 
 #sample_rate, samples = wavfile.read(AUDIO_FILE)
-samples, sample_rate = librosa.load(AUDIO_FILE, sr=None)  #same but with spicy instead of librosa
+samples, sample_rate = librosa.load(AUDIO_FILE, sr=None)  #same but with librosa instead of spicy
 
 # Display Mel-Spectrogram using decibel scale
 sgram = librosa.stft(samples)
