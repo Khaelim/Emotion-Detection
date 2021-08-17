@@ -36,7 +36,7 @@ test_ds = tf.keras.preprocessing.image_dataset_from_directory(
   data_dir,
   labels='inferred',
   color_mode='grayscale',
-  class_names=['angry', 'disgust', 'fear', 'happy', 'neutral', 'sad', 'surprise'],
+  class_names=['anger', 'disgust', 'fear', 'happy', 'neutral', 'sad', 'surprise'],
   seed=123,
   image_size=(img_height, img_width),
   batch_size=batch_size)
