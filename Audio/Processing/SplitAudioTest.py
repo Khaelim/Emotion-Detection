@@ -5,10 +5,11 @@ import math
 
 
 class SplitWavAudioMubin():
-    def __init__(self, folder, filename):
+    def __init__(self, folder, dest_folder, filename):
         self.folder = folder
         self.filename = filename
-        self.filepath = folder + '/' + filename
+        self.filepath = folder + filename
+        self.dest_folder = dest_folder
 
         self.audio = AudioSegment.from_wav(self.filepath)
 
@@ -19,12 +20,15 @@ class SplitWavAudioMubin():
         t1 = from_sec * 1000
         t2 = to_sec * 1000
         split_audio = self.audio[t1:t2]
-        split_audio.export(self.folder + '/' + split_filename, format="wav")
+        split_audio.export(self.dest_folder + split_filename, format="wav")
 
     def multiple_split(self, min_per_split):
-        total_secs= math.ceil(self.get_duration() / 60 * 60)
+        total_secs = math.ceil(self.get_duration() / 60 * 60)
         for i in range(0, total_secs, min_per_split):
-            split_fn = str(i) + '_' + self.filename
+
+            index = self.filename.find('.wav')
+            split_fn = filename[:index] + '-' + str(i) + filename[index:]
+            # split_fn = str(i) + '_' + self.filename
             self.single_split(i, i + min_per_split, split_fn)
             print(str(i) + ' Done')
             if i == total_secs - min_per_split:
@@ -33,11 +37,29 @@ class SplitWavAudioMubin():
 
 # change to fit current filesystem
 folder = ''
-save_folder = ''
+save_folder = 'C:/Users/Khaelim/Python Projects/Datasets/AUDIO_FINAL_PROCESSED/'
 
-directory = r'C:\Users\Khaelim\Python Projects\Datasets\AUDIO_FINAL'
-for filename in os.listdir(directory):
-    print(os.path.join(directory, filename))
+directory = 'C:/Users/Khaelim/Python Projects/Datasets/AUDIO_FINAL/'
+#print(directory)
+counter = 1
+for dirs in os.listdir(directory):
+    #print(dirs)
+
+    for filename in os.listdir(directory + dirs):
+        print(str(counter) + ': ' + directory + dirs + '/' + filename)
+        counter += 1
+        file = filename
+        split_wav = SplitWavAudioMubin(directory + dirs + '/', save_folder + dirs + '/', file)
+        split_wav.multiple_split(min_per_split=1)
+
+
+"""Print all filenames"""
+# for dirs in os.listdir(directory):
+#     counter = 1
+#     for filename in os.listdir(directory + dirs):
+#         print(str(counter)+ ': ')
+#         print(os.path.join(directory, dirs, filename))
+#         counter += 1
 
 
 """TEST"""
