@@ -25,8 +25,8 @@ print(tf.__version__)
 #     tf.TensorSpec(shape=([48,48]), dtype=tf.float32))
 
 dataset_dir = path = os.path.join('C:/Users/Khaelim/Python Projects/Datasets/IMAGE_FINAL/', "saved_test_data")
-main_dir = 'C:/Users/Khaelim/Python Projects/Datasets/IMAGE_FINAL/'
-main_dir = pathlib.Path(main_dir)
+# main_dir = 'C:/Users/Khaelim/Python Projects/Datasets/IMAGE_FINAL/'
+# main_dir = pathlib.Path(main_dir)
 
 # train_dir = 'C:/Khaelim/ForProgramming/FERv1/FER13/train/'
 # test_dir = 'C:/Khaelim/ForProgramming/FERv1/FER13/test/'
@@ -97,13 +97,13 @@ num_classes = 7
 model = tf.keras.Sequential([
   #layers.experimental.preprocessing.Rescaling(1./255),
   layers.Dense(6, input_shape=(48, 48, 1)),
+  layers.Conv2D(64, 3, activation='relu'),
+  layers.MaxPooling2D(),
   layers.Conv2D(32, 3, activation='relu'),
   layers.MaxPooling2D(),
   layers.Conv2D(64, 3, activation='relu'),
   layers.MaxPooling2D(),
   layers.Conv2D(32, 3, activation='relu'),
-  layers.MaxPooling2D(),
-  layers.Conv2D(16, 3, activation='relu'),
   layers.Flatten(),
   layers.Dense(128, activation='relu'),
   layers.Dense(num_classes)
@@ -115,8 +115,16 @@ model.compile(
   metrics=['accuracy'])
 
 #Attempting to add tensorboard
+
 log_dir = "C:/Khaelim/ForProgramming/TBlogs" + datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
 tensorboard_callback = tf.keras.callbacks.TensorBoard(log_dir=log_dir, histogram_freq=1)
+
+# Create some callbacks
+callbacks = [tf.keras.callbacks.ModelCheckpoint(filepath=path, monitor='val_loss', save_best_only=True),
+             tf.keras.callbacks.ReduceLROnPlateau(monitor='val_loss', factor=0.9, patience=15, verbose=1,
+                                                  min_lr=0.000001),
+             tf.keras.callbacks.TensorBoard(log_dir=log_dir, histogram_freq=1)
+]
 
 
 #training the model in loop w/ checkpoint
@@ -140,7 +148,7 @@ model.fit(
   batch_size=batch_size,
   steps_per_epoch=None,
   epochs=epochs,
-  callbacks=[tensorboard_callback])
+  callbacks=callbacks)
 
 #
 #tf.saved_model.save(model, "C:/Khaelim/ForProgramming/TFmodels/Facial_emote/")
