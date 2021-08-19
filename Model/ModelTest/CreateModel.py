@@ -101,7 +101,7 @@ model = tf.keras.Sequential([
   layers.MaxPooling2D(),
   layers.Conv2D(32, 3, activation='relu'),
   layers.MaxPooling2D(),
-  layers.Conv2D(64, 3, activation='relu'),
+  layers.Conv2D(16, 3, activation='relu'),
   layers.MaxPooling2D(),
   layers.Conv2D(32, 3, activation='relu'),
   layers.Flatten(),
@@ -140,7 +140,7 @@ model_checkpoint_callback = tf.keras.callbacks.ModelCheckpoint(
 batch_size = 32
 img_height = 48
 img_width = 48
-epochs = 100
+epochs = 80
 
 model.fit(
   main_dataset,
