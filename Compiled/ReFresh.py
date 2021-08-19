@@ -9,9 +9,12 @@ import tensorflow as tf
 
 class_names=['angry', 'disgust', 'fear', 'happy', 'neutral', 'sad', 'surprise']
 
-mymodel = tf.keras.models.load_model('C:/Users/Khaelim/Python Projects/Emotion-Detection/Compiled/my_model.h5', compile=True)
-#mymodel = tf.keras.models.load_model('C:/Users/Khaelim/Python Projects/Emotion-Detection/Compiled/saved_model.pb', compile=True)
+#mymodel = tf.keras.models.load_model('C:/Users/Khaelim/Python Projects/Emotion-Detection/Compiled/my_model.h5', compile=True)
+mymodel = tf.keras.models.load_model('C:/Users/Khaelim/Python Projects/Emotion-Detection/Compiled/test.h5', compile=True)
 mymodel.compile(tf.keras.optimizers.Adam(), loss='mse')
+
+# mymodel = tf.keras.models.load_model('C:/Users/Khaelim/Python Projects/Emotion-Detection/Compiled/saved_model.pb', compile=True)
+# mymodel.compile(tf.keras.optimizers.Adam(), loss='mse')
 
 face_cascade = cv2.CascadeClassifier('haarcascade_frontalface_default.xml')
 
@@ -26,7 +29,7 @@ while (True):
 
 
     img = frame
-    temp_img = np.zeros([48,48,3],dtype=np.uint8)
+    temp_img = np.zeros([48,48,3],dtype=np.uint8)  # MAYBE RENAME TO [48, 48, 1]
     tx = 0
     ty = 0
 
@@ -40,7 +43,7 @@ while (True):
         ty = y
 
     temp_img1 = tf.image.resize(temp_img, [48, 48], preserve_aspect_ratio=True)
-    resize_image = tf.reshape(temp_img1, [-1, 48, 48, 3])
+    resize_image = tf.reshape(temp_img1, [-1, 48, 48, 1])
 
     predictions = mymodel.predict(resize_image)
     cv2.putText(img, str(class_names[np.argmax(predictions[0])]), (tx - 10, ty - 10), cv2.FONT_HERSHEY_PLAIN, 2, (0, 255, 0))

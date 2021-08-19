@@ -151,10 +151,10 @@ model.fit(
   callbacks=callbacks)
 
 #
-#tf.saved_model.save(model, "C:/Khaelim/ForProgramming/TFmodels/Facial_emote/")
+tf.saved_model.save(model, "./test1.h5")
 
 tf.keras.models.save_model(
-    model, "C:/Khaelim/ForProgramming/TFmodels/Facial_emote/test.h5", overwrite=True, include_optimizer=True, save_format='pb',
+    model, "test.h5", overwrite=True, include_optimizer=True, save_format='pb',
     signatures=None, options=None
 )
 
