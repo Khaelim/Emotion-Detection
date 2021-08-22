@@ -1,4 +1,4 @@
-#%load_ext tensorboard
+# %load_ext tensorboard
 import tempfile
 
 import matplotlib.pyplot as plt
@@ -17,6 +17,13 @@ from tensorflow.keras.models import Sequential
 
 print(tf.__version__)
 
+"""basic variables"""
+
+batch_size = 32
+img_height = 48
+img_width = 48
+epochs = 80
+
 """Load test, Currently performed below"""
 # train_ds=tf.data.experimental.load(train_dir,
 #     tf.TensorSpec(shape=([48,48]), dtype=tf.float32))
@@ -25,8 +32,8 @@ print(tf.__version__)
 #     tf.TensorSpec(shape=([48,48]), dtype=tf.float32))
 
 dataset_dir = path = os.path.join('C:/Users/Khaelim/Python Projects/Datasets/IMAGE_FINAL/', "saved_test_data")
-# main_dir = 'C:/Users/Khaelim/Python Projects/Datasets/IMAGE_FINAL/'
-# main_dir = pathlib.Path(main_dir)
+main_dir = 'C:/Users/Khaelim/Python Projects/Datasets/IMAGE_FINAL/'
+main_dir = pathlib.Path(main_dir)
 
 # train_dir = 'C:/Khaelim/ForProgramming/FERv1/FER13/train/'
 # test_dir = 'C:/Khaelim/ForProgramming/FERv1/FER13/test/'
@@ -36,13 +43,13 @@ dataset_dir = path = os.path.join('C:/Users/Khaelim/Python Projects/Datasets/IMA
 # test_dir = pathlib.Path(test_dir)
 # image_count = len(list(main_dir.glob('*/*.jpg')))
 
-# angry = list(main_dir.glob('anger/*'))
-# disgust = list(main_dir.glob('disgust/*'))
-# fear = list(main_dir.glob('fear/*'))
-# happy = list(main_dir.glob('happy/*'))
-# neutral = list(main_dir.glob('neutral/*'))
-# sad = list(main_dir.glob('sad/*'))
-# surprise = list(main_dir.glob('surprise/*'))
+angry = list(main_dir.glob('anger/*'))
+disgust = list(main_dir.glob('disgust/*'))
+fear = list(main_dir.glob('fear/*'))
+happy = list(main_dir.glob('happy/*'))
+neutral = list(main_dir.glob('neutral/*'))
+sad = list(main_dir.glob('sad/*'))
+surprise = list(main_dir.glob('surprise/*'))
 
 """Creating dataset in done separately"""
 # main_ds = tf.keras.preprocessing.image_dataset_from_directory(
@@ -54,67 +61,66 @@ dataset_dir = path = os.path.join('C:/Users/Khaelim/Python Projects/Datasets/IMA
 #   image_size=(img_height, img_width),
 #   batch_size=batch_size)
 
-# train_ds = tf.keras.preprocessing.image_dataset_from_directory(
-#   train_dir,
-#   labels='inferred',
-#   color_mode='grayscale',
-#   class_names=['anger', 'disgust', 'fear', 'happy', 'neutral', 'sad', 'surprise'],
-#   seed=123,
-#   image_size=(img_height, img_width),
-#   batch_size=batch_size)
-#
-#
-# test_ds = tf.keras.preprocessing.image_dataset_from_directory(
-#   test_dir,
-#   labels='inferred',
-#   color_mode='grayscale',
-#   class_names=['anger', 'disgust', 'fear', 'happy', 'neutral', 'sad', 'surprise'],
-#   seed=123,
-#   image_size=(img_height, img_width),
-#   batch_size=batch_size)
+train_ds = tf.keras.preprocessing.image_dataset_from_directory(
+    main_dir,
+    color_mode='grayscale',
+    validation_split=0.2,
+    subset="training",
+    class_names=['anger', 'disgust', 'fear', 'happy', 'neutral', 'sad', 'surprise'],
+    seed=123,
+    image_size=(img_height, img_width),
+    batch_size=batch_size)
 
-# class_names = train_ds.class_names
-# print(class_names)
-# print(len(train_ds.class_names))
+test_ds = tf.keras.preprocessing.image_dataset_from_directory(
+    main_dir,
+    validation_split=0.2,
+    color_mode='grayscale',
+    subset="validation",
+    seed=123,
+    image_size=(img_height, img_width),
+    batch_size=batch_size)
 
-#caching images to increase performance
-# AUTOTUNE = tf.data.experimental.AUTOTUNE
+class_names = train_ds.class_names
+print(class_names)
+print(len(train_ds.class_names))
 
-# train_ds = train_ds.cache().prefetch(buffer_size=AUTOTUNE)
-# train_ds = train_dir.cache().prefetch(buffer_size=AUTOTUNE)
+# caching images to increase performance
+AUTOTUNE = tf.data.experimental.AUTOTUNE
+
+train_ds = train_ds.cache().prefetch(buffer_size=AUTOTUNE)
+train_ds = test_ds.cache().prefetch(buffer_size=AUTOTUNE)
 
 """Loading the dataset"""
-main_dataset = tf.data.experimental.load(path)
+# main_dataset = tf.data.experimental.load(path)
 """Caching the dataset"""
 AUTOTUNE = tf.data.experimental.AUTOTUNE
 
-main_dataset = main_dataset.cache().prefetch(buffer_size=AUTOTUNE)
+# main_dataset = main_dataset.cache().prefetch(buffer_size=AUTOTUNE)
 
-
-#number of clasifications
+# number of clasifications
 num_classes = 7
-#defining the model
+# defining the model
 model = tf.keras.Sequential([
-  #layers.experimental.preprocessing.Rescaling(1./255),
-  layers.Dense(6, input_shape=(48, 48, 1)),
-  layers.Conv2D(64, 3, activation='relu'),
-  layers.MaxPooling2D(),
-  layers.Conv2D(32, 3, activation='relu'),
-  layers.MaxPooling2D(),
-  layers.Conv2D(16, 3, activation='relu'),
-  layers.MaxPooling2D(),
-  layers.Conv2D(32, 3, activation='relu'),
-  layers.Flatten(),
-  layers.Dense(128, activation='relu'),
-  layers.Dense(num_classes)
+    # layers.experimental.preprocessing.Rescaling(1./255),
+    layers.Dense(6, input_shape=(48, 48, 1)),
+    layers.Conv2D(64, 3, activation='relu'),
+    layers.MaxPooling2D(),
+    layers.Conv2D(32, 3, activation='relu'),
+    layers.MaxPooling2D(),
+    layers.Conv2D(16, 3, activation='relu'),
+    layers.MaxPooling2D(),
+    layers.Conv2D(32, 3, activation='relu'),
+    layers.Flatten(),
+    layers.Dense(128, activation='relu'),
+    layers.Dense(num_classes)
 ])
-#compileing the model
+# compileing the model
 model.compile(
-  optimizer='adam',
-  loss=tf.losses.SparseCategoricalCrossentropy(from_logits=True),
-  metrics=['accuracy'])
+    optimizer='adam',
+    loss=tf.losses.SparseCategoricalCrossentropy(from_logits=True),
+    metrics=['accuracy'])
 
-#Attempting to add tensorboard
+# Attempting to add tensorboard
 
 log_dir = "C:/Khaelim/ForProgramming/TBlogs" + datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
 tensorboard_callback = tf.keras.callbacks.TensorBoard(log_dir=log_dir, histogram_freq=1)
@@ -124,10 +130,9 @@ callbacks = [tf.keras.callbacks.ModelCheckpoint(filepath=path, monitor='val_loss
              tf.keras.callbacks.ReduceLROnPlateau(monitor='val_loss', factor=0.9, patience=15, verbose=1,
                                                   min_lr=0.000001),
              tf.keras.callbacks.TensorBoard(log_dir=log_dir, histogram_freq=1)
-]
+             ]
 
-
-#training the model in loop w/ checkpoint
+# training the model in loop w/ checkpoint
 
 model_checkpoint_callback = tf.keras.callbacks.ModelCheckpoint(
     filepath='C:/Khaelim/ForProgramming/checkpooints',
@@ -136,26 +141,20 @@ model_checkpoint_callback = tf.keras.callbacks.ModelCheckpoint(
     mode='max',
     save_best_only=True)
 
-
-batch_size = 32
-img_height = 48
-img_width = 48
-epochs = 80
-
 model.fit(
-  main_dataset,
-  #validation_data=test_ds,
-  batch_size=batch_size,
-  steps_per_epoch=None,
-  epochs=epochs,
-  callbacks=callbacks)
+    train_ds,
+    validation_data=test_ds,
+    batch_size=batch_size,
+    steps_per_epoch=None,
+    epochs=epochs,
+    callbacks=callbacks)
 
 #
-tf.saved_model.save(model, "./test1.h5")
+tf.saved_model.save(model, "./tf_image_model_v3.h5")
 
 tf.keras.models.save_model(
-    model, "test.h5", overwrite=True, include_optimizer=True, save_format='pb',
+    model, "ker_image_model_v3.h5", overwrite=True, include_optimizer=True, save_format='pb',
     signatures=None, options=None
 )
 
-model.save('my_model_v2.h5')
+model.save('image_model_v3.h5')
