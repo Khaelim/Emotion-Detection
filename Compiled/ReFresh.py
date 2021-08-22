@@ -10,7 +10,7 @@ import tensorflow as tf
 class_names=['angry', 'disgust', 'fear', 'happy', 'neutral', 'sad', 'surprise']
 
 #mymodel = tf.keras.models.load_model('C:/Users/Khaelim/Python Projects/Emotion-Detection/Compiled/my_model.h5', compile=True)
-mymodel = tf.keras.models.load_model('C:/Users/Khaelim/Python Projects/Emotion-Detection/Compiled/test.h5', compile=True)
+mymodel = tf.keras.models.load_model('my_model_v2.h5', compile=True)
 mymodel.compile(tf.keras.optimizers.Adam(), loss='mse')
 
 # mymodel = tf.keras.models.load_model('C:/Users/Khaelim/Python Projects/Emotion-Detection/Compiled/saved_model.pb', compile=True)
@@ -67,7 +67,7 @@ while (True):
     # resize image
     resized = cv2.resize(img, dim, interpolation=cv2.INTER_AREA)
 
-    cv2.imshow("yoop", resized)
+    cv2.imshow("yoop", frame)
 
     #print(mymodel.summary())
 

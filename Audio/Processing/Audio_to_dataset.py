@@ -13,10 +13,10 @@ from tensorflow import keras
 from tensorflow.keras import layers
 from tensorflow.keras.models import Sequential
 
-dataset_dir = path = os.path.join('C:/Users/Khaelim/Python Projects/Datasets/IMAGE_FINAL/', "saved_test_data")
-main_dir = 'C:/Users/Khaelim/Python Projects/Datasets/IMAGE_FINAL/'
-train_dir = 'C:/Users/Khaelim/Python Projects/Datasets/IMAGE_FINAL/'
-test_dir = 'C:/Users/Khaelim/Python Projects/Datasets/IMAGE_FINAL/'
+dataset_dir = path = os.path.join('C:/Users/Khaelim/Python Projects/Datasets/AUDIO_FINAL/', "saved_test_data")
+main_dir = 'C:/Users/Khaelim/Python Projects/Datasets/AUDIO_FINAL/'
+train_dir = 'C:/Users/Khaelim/Python Projects/Datasets/AUDIO_FINAL/'
+test_dir = 'C:/Users/Khaelim/Python Projects/Datasets/AUDIO_FINAL/'
 main_dir = pathlib.Path(main_dir)
 
 main_dir = pathlib.Path(main_dir)
@@ -34,14 +34,14 @@ batch_size = 32
 img_height = 48
 img_width = 48
 
-main_ds = tf.keras.preprocessing.image_dataset_from_directory(
-    main_dir,
-    labels='inferred',
-    color_mode='grayscale',
-    class_names=['anger', 'disgust', 'fear', 'happy', 'neutral', 'sad', 'surprise'],
-    seed=123,
-    image_size=(img_height, img_width),
-    batch_size=batch_size)
+# main_ds = tf.keras.preprocessing.image_dataset_from_directory(
+#     main_dir,
+#     labels='inferred',
+#     color_mode='grayscale',
+#     class_names=['anger', 'disgust', 'fear', 'happy', 'neutral', 'sad', 'surprise'],
+#     seed=123,
+#     image_size=(img_height, img_width),
+#     batch_size=batch_size)
 
 # train_ds = tf.keras.preprocessing.image_dataset_from_directory(
 #   train_dir,

@@ -37,10 +37,10 @@ class SplitWavAudioMubin():
 
 # change to fit current filesystem
 folder = ''
-save_folder = 'C:/Users/Khaelim/Python Projects/Datasets/AUDIO_FINAL_PROCESSED/'
+save_folder = 'C:/temp1/'
 
-directory = 'C:/Users/Khaelim/Python Projects/Datasets/AUDIO_FINAL/'
-#print(directory)
+directory = 'C:/temp/'
+print(directory)
 counter = 1
 for dirs in os.listdir(directory):
     #print(dirs)
@@ -48,9 +48,9 @@ for dirs in os.listdir(directory):
     for filename in os.listdir(directory + dirs):
         print(str(counter) + ': ' + directory + dirs + '/' + filename)
         counter += 1
-        file = filename
-        split_wav = SplitWavAudioMubin(directory + dirs + '/', save_folder + dirs + '/', file)
-        split_wav.multiple_split(min_per_split=1)
+        # file = filename
+        # split_wav = SplitWavAudioMubin(directory + dirs + '/', save_folder + dirs + '/', file)
+        # split_wav.multiple_split(min_per_split=1)
 
 
 """Print all filenames"""
