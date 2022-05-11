@@ -4,7 +4,7 @@ import speech_recognition as sr
 import sounddevice as sd
 import matplotlib.pyplot as plt
 import librosa
-import librosa.display
+
 import numpy as np
 
 AUDIO_FILE = "microphone.wav"
@@ -25,7 +25,7 @@ with open("microphone.wav", "wb") as f:
     f.write(audio.get_wav_data())
 
 #sample_rate, samples = wavfile.read(AUDIO_FILE)
-samples, sample_rate = librosa.load(AUDIO_FILE, sr=None)  #same but with librosa instead of spicy
+samples, sample_rate = librosa.load(AUDIO_FILE, sr=16000)  #same but with librosa instead of spicy
 
 
 # plt.figure(figsize=(14, 5))

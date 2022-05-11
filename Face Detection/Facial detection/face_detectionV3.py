@@ -1,5 +1,5 @@
 import matplotlib.pyplot as plt
-#from facenet_pytorch import MTCNN
+# from facenet_pytorch import MTCNN
 from facenet_pytorch.models import mtcnn
 from mtcnn.mtcnn import MTCNN
 from PIL import Image
@@ -13,8 +13,7 @@ from tqdm.notebook import tqdm
 from FastMTCNN import FastMTCNN
 
 device = 'cuda' if torch.cuda.is_available() else 'cpu'
-
-
+print(device)
 
 
 fast_mtcnn = FastMTCNN(
@@ -46,7 +45,6 @@ def run_detection(fast_mtcnn, filenames):
             frames.append(frame)
 
             if len(frames) >= batch_size or j == v_len - 1:
-
                 faces = fast_mtcnn(frames)
 
                 frames_processed += len(frames)
@@ -60,6 +58,7 @@ def run_detection(fast_mtcnn, filenames):
             )
 
         v_cap.stop()
+
 
 def draw_facebox(filename, result_list):
     data = plt.imread(filename)
@@ -75,19 +74,19 @@ def draw_facebox(filename, result_list):
         plt.show()
 
 
-#filenames = glob.glob('Soul-Mates.AU.S01E01.WEB-DLx264-JIVE.mp4')#[:100]
+# filenames = glob.glob('Soul-Mates.AU.S01E01.WEB-DLx264-JIVE.mp4')#[:100]
 
-cap = cv2.VideoCapture('Soul-Mates.AU.S01E01.WEB-DLx264-JIVE.mp4')
+# cap = cv2.VideoCapture('Soul-Mates.AU.S01E01.WEB-DLx264-JIVE.mp4')
+cap = cv2.VideoCapture(0)
 if (cap.isOpened() == False):
     print("Error opening video stream or file")
 
 # Read until video is completed
 
-while (cap.isOpened()):
-
+while True:  # (cap.isOpened()):
     # Capture frame-by-frame
     ret, frame = cap.read()
-    if frame.size == 0:
+    if frame.size == 0:  # if no frame is captured repeat the loop
         continue
     cv2.imshow("Test", frame)
     detector = FastMTCNN
@@ -104,9 +103,7 @@ while (cap.isOpened()):
     pixels = cv2.imread(filename)
     run_detection(FastMTCNN, filename)
     draw_facebox(filename, faces)
-    #maybe movie here
-
-
+    # maybe movie here
 
     # Press Q on keyboard to  exit
     if cv2.waitKey(0) & 0xFF == ord('q'):
@@ -116,6 +113,5 @@ while (cap.isOpened()):
         break
 cap.release()
 cv2.destroyAllWindows()
-
 
 run_detection(fast_mtcnn, filename)

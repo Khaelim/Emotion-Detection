@@ -30,9 +30,7 @@ neutral = list(main_dir.glob('neutral/*'))
 sad = list(main_dir.glob('sad/*'))
 surprise = list(main_dir.glob('surprise/*'))
 
-batch_size = 32
-img_height = 48
-img_width = 48
+
 
 # main_ds = tf.keras.preprocessing.image_dataset_from_directory(
 #     main_dir,

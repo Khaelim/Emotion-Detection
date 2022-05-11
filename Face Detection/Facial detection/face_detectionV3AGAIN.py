@@ -14,7 +14,6 @@ device = 'cuda' if torch.cuda.is_available() else 'cpu'
 
 filenames = glob.glob(0)
 
-
 fast_mtcnn = FastMTCNN(
     stride=4,
     resize=1,
@@ -44,13 +43,11 @@ def run_detection(fast_mtcnn, filenames):
             frames.append(frame)
             cv2.imshow(frame)
             if len(frames) >= batch_size or j == v_len - 1:
-
                 faces = fast_mtcnn(frames)
 
                 frames_processed += len(frames)
                 faces_detected += len(faces)
                 frames = []
-                
 
                 print(
                     f'Frames per second: {frames_processed / (time.time() - start):.3f},',
@@ -59,6 +56,7 @@ def run_detection(fast_mtcnn, filenames):
                 )
 
         v_cap.stop()
+
 
 def draw_facebox(filename, result_list):
     data = plt.imread(filename)
@@ -70,5 +68,6 @@ def draw_facebox(filename, result_list):
         ax.add_patch(rect)
 
         plt.show()
+
 
 run_detection(fast_mtcnn, filenames)

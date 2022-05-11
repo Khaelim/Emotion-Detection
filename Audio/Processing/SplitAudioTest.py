@@ -10,7 +10,6 @@ class SplitWavAudioMubin():
         self.filename = filename
         self.filepath = folder + filename
         self.dest_folder = dest_folder
-
         self.audio = AudioSegment.from_wav(self.filepath)
 
     def get_duration(self):
@@ -25,7 +24,6 @@ class SplitWavAudioMubin():
     def multiple_split(self, min_per_split):
         total_secs = math.ceil(self.get_duration() / 60 * 60)
         for i in range(0, total_secs, min_per_split):
-
             index = self.filename.find('.wav')
             split_fn = filename[:index] + '-' + str(i) + filename[index:]
             # split_fn = str(i) + '_' + self.filename

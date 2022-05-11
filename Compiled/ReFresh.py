@@ -2,15 +2,15 @@ import cv2
 import numpy as np
 import tensorflow as tf
 
-# def get_class_string_from_index(index):
-#    for class_string, class_index in valid_generator.class_indices.items():
-#       if class_index == index:
-#          return class_string
+def get_class_string_from_index(index):
+   for class_string, class_index in valid_generator.class_indices.items():
+      if class_index == index:
+         return class_string
 
 class_names=['angry', 'disgust', 'fear', 'happy', 'neutral', 'sad', 'surprise']
 
 #mymodel = tf.keras.models.load_model('C:/Users/Khaelim/Python Projects/Emotion-Detection/Compiled/my_model.h5', compile=True)
-mymodel = tf.keras.models.load_model('my_model_v2.h5', compile=True)
+mymodel = tf.keras.models.load_model('video_model_v2.h5', compile=True)
 mymodel.compile(tf.keras.optimizers.Adam(), loss='mse')
 
 # mymodel = tf.keras.models.load_model('C:/Users/Khaelim/Python Projects/Emotion-Detection/Compiled/saved_model.pb', compile=True)
@@ -18,7 +18,8 @@ mymodel.compile(tf.keras.optimizers.Adam(), loss='mse')
 
 face_cascade = cv2.CascadeClassifier('haarcascade_frontalface_default.xml')
 
-cap = cv2.VideoCapture(0)
+#cap = cv2.VideoCapture(0)
+cap = cv2.VideoCapture('D:/Downloads/Ap_Creative_Stock_Header.jpg')
 
 while (True):
     ret, frame = cap.read()

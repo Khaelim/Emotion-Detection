@@ -30,16 +30,17 @@ neutral = list(main_dir.glob('neutral/*'))
 sad = list(main_dir.glob('sad/*'))
 surprise = list(main_dir.glob('surprise/*'))
 
-batch_size = 32
+batch_size = 256
 img_height = 128
 img_width = 32
+epochs = 128
 
 main_ds = tf.keras.preprocessing.image_dataset_from_directory(
     main_dir,
     labels='inferred',
     color_mode='grayscale',
     class_names=['anger', 'disgust', 'fear', 'happy', 'neutral', 'sad', 'surprise'],
-    seed=123,
+    seed=54321,
     image_size=(img_height, img_width),
     batch_size=batch_size)
 
@@ -50,7 +51,7 @@ train_ds = tf.keras.preprocessing.image_dataset_from_directory(
   class_names=['anger', 'disgust', 'fear', 'happy', 'neutral', 'sad', 'surprise'],
   validation_split=0.2,
   subset="training",
-  seed=123,
+  seed=54321,
   image_size=(img_height, img_width),
   batch_size=batch_size)
 
@@ -89,13 +90,14 @@ model = tf.keras.Sequential([
   #layers.Dense(7, input_shape=([48, 48])),
   layers.Conv2D(7, 3, activation='relu'),
   layers.MaxPooling2D(),
-  layers.Conv2D(32, 2, activation='relu'),
+  layers.Conv2D(32, 3, activation='relu'),
   layers.MaxPooling2D(),
   layers.Conv2D(64, 2, activation='relu'),
   layers.MaxPooling2D(),
-  layers.Conv2D(32, 2, activation='elu'),
+  layers.Conv2D(128, 2, activation='relu'),
   layers.Flatten(),
   layers.Dense(128, activation='relu'),
+  layers.Dense(64, activation='relu'),
   layers.Dense(num_classes)
 ])
 #compileing the model
@@ -113,20 +115,20 @@ tensorboard_callback = tf.keras.callbacks.TensorBoard(log_dir=log_dir, histogram
 model.fit(
   train_ds,
   validation_data=test_ds,
-  batch_size=100,
+  batch_size=batch_size,
   steps_per_epoch=None,
-  epochs=64,
+  epochs=epochs,
   callbacks=[tensorboard_callback])
 
 # Saving options for model
 
 #tf.saved_model.save(model, "C:/Khaelim/ForProgramming/TFmodels/Facial_emote/")
 
-tf.keras.models.save_model(
-    model, "my_audio_model.pb", overwrite=True, include_optimizer=True, save_format='pb',
-    signatures=None, options=None
-)
-# model.save('my_audio_model.pb')
+# tf.keras.models.save_model(
+#     model, "my_audio_model.pb", overwrite=True, include_optimizer=True, save_format='pb',
+#     signatures=None, options=None
+# )
+model.save('my_audio_model_v5.h5')
 
 
 print('Done')

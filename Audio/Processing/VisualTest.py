@@ -8,20 +8,28 @@ import scipy
 import tensorflow
 from scipy.io import wavfile
 
-
-def ensure_sample_rate(original_sample_rate, waveform,
-                       desired_sample_rate=16000):
-    """Resample waveform if required."""
-    if original_sample_rate != desired_sample_rate:
-        desired_length = int(round(float(len(waveform)) /
-                                   original_sample_rate * desired_sample_rate))
-        waveform = scipy.signal.resample(waveform, desired_length)
-    return desired_sample_rate, waveform
+#
+# def ensure_sample_rate(original_sample_rate, waveform,
+#                        desired_sample_rate=16000):
+#     """Resample waveform if required."""
+#     if original_sample_rate != desired_sample_rate:
+#         desired_length = int(round(float(len(waveform)) /
+#                                    original_sample_rate * desired_sample_rate))
+#         waveform = scipy.signal.resample(waveform, desired_length)
+#     return desired_sample_rate, waveform
 
 
 def audio_to_image(path_to_audio):
     # sample_rate, samples = wavfile.read(AUDIO_FILE)
     samples, sample_rate = librosa.load(path_to_audio, sr=None)  # same but with librosa instead of spicy
+
+    # Display Mel-Spectrogram using decibel scale
+    sgram = librosa.stft(samples)
+    sgram_mag, _ = librosa.magphase(sgram)
+    mel_sgram = librosa.amplitude_to_db(librosa.feature.melspectrogram(S=sgram_mag, sr=sample_rate), ref=np.min)
+    librosa.display.specshow(mel_sgram, sr=sample_rate)#, x_axis='time', y_axis='mel')
+    #plt.colorbar(format='%+2.0f dB')
+    plt.show()
 
     # # get some data  *****most of this is unnecessary*****
     # sample_rate, wav_data = wavfile.read(path_to_audio, 'rb')
@@ -38,14 +46,7 @@ def audio_to_image(path_to_audio):
     # plt.xlim([0, len(waveform)])
     # plt.show()
 
-    # Display Mel-Spectrogram using decibel scale
-    sgram = librosa.stft(samples)
-    sgram_mag, _ = librosa.magphase(sgram)
-    mel_sgram = librosa.amplitude_to_db(librosa.feature.melspectrogram(S=sgram_mag, sr=sample_rate), ref=np.min)
-    librosa.display.specshow(mel_sgram, sr=sample_rate, x_axis='time', y_axis='mel')
-    plt.colorbar(format='%+2.0f dB')
 
-    plt.show()
 
     # # Disply amplitude waveform
     # plt.figure(figsize=(14, 5))
