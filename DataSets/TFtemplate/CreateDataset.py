@@ -43,27 +43,27 @@ main_ds = tf.keras.preprocessing.image_dataset_from_directory(
     image_size=(img_height, img_width),
     batch_size=batch_size)
 
-# train_ds = tf.keras.preprocessing.image_dataset_from_directory(
-#   train_dir,
-#   labels='inferred',
-#   color_mode='grayscale',
-#   class_names=['angry', 'disgust', 'fear', 'happy', 'neutral', 'sad', 'surprise'],
-#   validation_split=0.2,
-#   subset="training",
-#   seed=123,
-#   image_size=(img_height, img_width),
-#   batch_size=batch_size)
-#
-# test_ds = tf.keras.preprocessing.image_dataset_from_directory(
-#   test_dir,
-#   labels='inferred',
-#   color_mode='grayscale',
-#   class_names=['angry', 'disgust', 'fear', 'happy', 'neutral', 'sad', 'surprise'],
-#   validation_split=0.2,
-#   subset="validation",
-#   seed=123,
-#   image_size=(img_height, img_width),
-#   batch_size=batch_size)
+train_ds = tf.keras.preprocessing.image_dataset_from_directory(
+  train_dir,
+  labels='inferred',
+  color_mode='grayscale',
+  class_names=['angry', 'disgust', 'fear', 'happy', 'neutral', 'sad', 'surprise'],
+  validation_split=0.2,
+  subset="training",
+  seed=123,
+  image_size=(img_height, img_width),
+  batch_size=batch_size)
+
+test_ds = tf.keras.preprocessing.image_dataset_from_directory(
+  test_dir,
+  labels='inferred',
+  color_mode='grayscale',
+  class_names=['angry', 'disgust', 'fear', 'happy', 'neutral', 'sad', 'surprise'],
+  validation_split=0.2,
+  subset="validation",
+  seed=123,
+  image_size=(img_height, img_width),
+  batch_size=batch_size)
 
 
 tf.data.experimental.save(main_ds, dataset_dir)
@@ -72,7 +72,7 @@ tf.data.experimental.save(main_ds, dataset_dir)
 
 
 # To cache the model for repeated training
-# test_ds = train_ds.cache().prefetch(buffer_size=tf.data.experimental.AUTOTUNE)
+test_ds = train_ds.cache().prefetch(buffer_size=tf.data.experimental.AUTOTUNE)
 
 
 print('Done')
